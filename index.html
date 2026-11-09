@@ -145,21 +145,28 @@
     </div>
 </div>
 
-<!-- UPI Payment Modal -->
+<!-- UPI Payment Verification Modal -->
 <div id="paymentModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;">
-    <div style="background:white; padding:24px; border-radius:12px; width:90%; max-width:350px; text-align:center;">
+    <div style="background:white; padding:24px; border-radius:12px; width:90%; max-width:380px; text-align:center;">
         <h3>Unlock Clean HD Image (₹20)</h3>
-        <p style="font-size:0.85rem; color:#64748b; margin-bottom:15px;">Pay instantly using GPay, PhonePe, or Paytm.</p>
-        
-        <!-- Direct UPI App Button configured with your phone number -->
+        <p style="font-size:0.85rem; color:#64748b; margin-bottom:12px;">
+            Pay ₹20 to UPI Number: <strong style="color:#2563eb;">9816643856</strong>
+        </p>
+
+        <!-- Direct UPI App Button -->
         <a href="upi://pay?pa=9816643856@paytm&pn=Yogesh%20Bhardwaj&am=20&cu=INR" class="btn btn-secondary" style="display:block; text-decoration:none; text-align:center; margin-bottom:12px;">
             Pay ₹20 via UPI App
         </a>
 
-        <p style="font-size:0.75rem; color:#64748b; margin-bottom:15px;">Or send manually to UPI ID: <strong>9816643856@paytm</strong></p>
+        <!-- Screenshot Upload Section -->
+        <div style="border: 2px dashed #cbd5e1; padding: 12px; border-radius: 8px; margin-bottom: 12px; background: #f8fafc; text-align: left;">
+            <label style="font-size: 0.8rem; font-weight: bold; display: block; margin-bottom: 5px;">Upload Payment Screenshot:</label>
+            <input type="file" id="paymentScreenshot" accept="image/*" style="font-size: 0.8rem; width: 100%;">
+            <p style="font-size: 0.7rem; color: #64748b; margin-top: 4px;">Must be taken within the last 5 minutes.</p>
+        </div>
 
-        <!-- Once paid, click to download -->
-        <button class="btn" id="confirmPaymentBtn" style="width:100%; margin-bottom:8px; background-color:#059669;">I Have Paid, Download HD</button>
+        <!-- Submit for Verification -->
+        <button class="btn" id="submitProofBtn" style="width:100%; margin-bottom:8px; background-color:#2563eb;">Verify & Download HD</button>
         <button class="btn" id="closeModalBtn" style="background:#64748b; width:100%;">Cancel</button>
     </div>
 </div>

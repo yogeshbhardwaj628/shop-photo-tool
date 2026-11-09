@@ -6,6 +6,7 @@ const ctx = canvas.getContext('2d');
 
 let productImg = null;
 let logoImg = null;
+let modalOpenTime = null; // Tracks when the payment modal opened
 
 // Handle Product Image Upload
 productInput.addEventListener('change', (e) => {
@@ -97,10 +98,12 @@ document.getElementById('downloadWatermarked').addEventListener('click', () => {
 // Payment Modal Triggers & Logic
 const paymentModal = document.getElementById('paymentModal');
 const payAndDownloadBtn = document.getElementById('payAndDownload');
-const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+const submitProofBtn = document.getElementById('submitProofBtn');
 const closeModalBtn = document.getElementById('closeModalBtn');
+const paymentScreenshot = document.getElementById('paymentScreenshot');
 
 payAndDownloadBtn.addEventListener('click', () => {
+    modalOpenTime = new Date(); // Record exact timestamp when modal opens
     paymentModal.style.display = 'flex';
 });
 
@@ -108,9 +111,26 @@ closeModalBtn.addEventListener('click', () => {
     paymentModal.style.display = 'none';
 });
 
-confirmPaymentBtn.addEventListener('click', () => {
+submitProofBtn.addEventListener('click', () => {
+    const file = paymentScreenshot.files[0];
+    if (!file) {
+        alert("Please upload your payment screenshot to proceed.");
+        return;
+    }
+
+    // Check screenshot file timestamp against current time
+    const fileLastModified = new Date(file.lastModified);
+    const now = new Date();
+    const diffMinutes = (now - fileLastModified) / (1000 * 60);
+
+    // Validate if screenshot was captured within the last 5 minutes
+    if (diffMinutes > 5) {
+        alert("Verification failed: The screenshot is older than 5 minutes. Please upload a recent payment screenshot.");
+        return;
+    }
+
     paymentModal.style.display = 'none';
-    alert("Thank you! Downloading your clean HD image...");
+    alert("Payment screenshot verified! Downloading your clean HD image...");
     
     drawCanvas(false); 
     triggerDownload("instagram-product-hd.png");
