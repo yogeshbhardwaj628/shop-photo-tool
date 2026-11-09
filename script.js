@@ -24,7 +24,7 @@ productInput.addEventListener('change', (e) => {
     reader.readAsDataURL(file);
 });
 
-// Handle Logo Upload (Reads the logo file and redraws canvas immediately)
+// Handle Logo Upload
 logoInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -48,11 +48,11 @@ function drawCanvas(includeWatermark) {
     canvas.width = size;
     canvas.height = size;
 
-    // 1. Fill background with clean white
+    // 1. Fill background with white
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, size, size);
 
-    // 2. Center the product image with padding
+    // 2. Center product image with padding
     const padding = 80; 
     const availableSize = size - (padding * 2);
     
@@ -68,11 +68,10 @@ function drawCanvas(includeWatermark) {
 
     ctx.drawImage(productImg, x, y, newWidth, newHeight);
 
-    // 3. CHANGE HERE: Draw Custom Store Logo in the bottom-right corner if uploaded
+    // 3. Draw Custom Store Logo in bottom-right corner if uploaded
     if (logoImg) {
-        const logoSize = 180; // You can change this number if you want the logo bigger or smaller
-        const margin = 50;   // Distance from the bottom-right corner edge
-        
+        const logoSize = 180; 
+        const margin = 50;   
         ctx.drawImage(logoImg, size - logoSize - margin, size - logoSize - margin, logoSize, logoSize);
     }
 
@@ -95,15 +94,27 @@ document.getElementById('downloadWatermarked').addEventListener('click', () => {
     triggerDownload("instagram-product-free.png");
 });
 
-// Paid Version Simulation
-document.getElementById('payAndDownload').addEventListener('click', () => {
-    let confirmed = confirm("Pay ₹20 via UPI to remove watermark and download clean HD image?");
-    if (confirmed) {
-        alert("Payment successful! Downloading clean image...");
-        drawCanvas(false); 
-        triggerDownload("instagram-product-hd.png");
-        drawCanvas(true); 
-    }
+// Payment Modal Triggers & Logic
+const paymentModal = document.getElementById('paymentModal');
+const payAndDownloadBtn = document.getElementById('payAndDownload');
+const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+const closeModalBtn = document.getElementById('closeModalBtn');
+
+payAndDownloadBtn.addEventListener('click', () => {
+    paymentModal.style.display = 'flex';
+});
+
+closeModalBtn.addEventListener('click', () => {
+    paymentModal.style.display = 'none';
+});
+
+confirmPaymentBtn.addEventListener('click', () => {
+    paymentModal.style.display = 'none';
+    alert("Thank you! Downloading your clean HD image...");
+    
+    drawCanvas(false); 
+    triggerDownload("instagram-product-hd.png");
+    drawCanvas(true);  
 });
 
 function triggerDownload(filename) {

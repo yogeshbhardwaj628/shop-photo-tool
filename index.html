@@ -57,10 +57,6 @@
             background: #f1f5f9;
         }
 
-        .upload-section input {
-            display: none;
-        }
-
         .btn {
             background-color: var(--primary);
             color: white;
@@ -71,6 +67,8 @@
             cursor: pointer;
             display: inline-block;
             margin-top: 8px;
+            text-decoration: none;
+            text-align: center;
         }
 
         .btn:hover {
@@ -116,13 +114,13 @@
 <body>
 
 <div class="container">
-    <h1>InstaShop Photo Formatter</h1>
+    <h1>InstaShop Formatter</h1>
     <p class="subtitle">Format product photos into 1:1 squares with your store logo instantly.</p>
 
     <!-- Upload Product Photo -->
     <div class="upload-section">
         <label for="productImage" class="btn" style="cursor:pointer;">Upload Product Photo</label>
-        <input type="file" id="productImage" accept="image/*">
+        <input type="file" id="productImage" accept="image/*" style="display:none;">
         <p style="font-size: 0.8rem; color: #64748b; margin-top: 8px;">Supports JPG, PNG</p>
     </div>
 
@@ -144,6 +142,25 @@
             <!-- Paid Clean Download Option -->
             <button class="btn btn-secondary" id="payAndDownload">Remove Watermark & Download HD (₹20)</button>
         </div>
+    </div>
+</div>
+
+<!-- UPI Payment Modal -->
+<div id="paymentModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;">
+    <div style="background:white; padding:24px; border-radius:12px; width:90%; max-width:350px; text-align:center;">
+        <h3>Unlock Clean HD Image (₹20)</h3>
+        <p style="font-size:0.85rem; color:#64748b; margin-bottom:15px;">Pay instantly using GPay, PhonePe, or Paytm.</p>
+        
+        <!-- Direct UPI App Button configured with your phone number -->
+        <a href="upi://pay?pa=9816643856@paytm&pn=Yogesh%20Bhardwaj&am=20&cu=INR" class="btn btn-secondary" style="display:block; text-decoration:none; text-align:center; margin-bottom:12px;">
+            Pay ₹20 via UPI App
+        </a>
+
+        <p style="font-size:0.75rem; color:#64748b; margin-bottom:15px;">Or send manually to UPI ID: <strong>9816643856@paytm</strong></p>
+
+        <!-- Once paid, click to download -->
+        <button class="btn" id="confirmPaymentBtn" style="width:100%; margin-bottom:8px; background-color:#059669;">I Have Paid, Download HD</button>
+        <button class="btn" id="closeModalBtn" style="background:#64748b; width:100%;">Cancel</button>
     </div>
 </div>
 
