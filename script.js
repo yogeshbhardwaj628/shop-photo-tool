@@ -17,14 +17,14 @@ productInput.addEventListener('change', (e) => {
         productImg = new Image();
         productImg.onload = function() {
             previewArea.style.display = 'block';
-            drawCanvas(true); // Draw with watermark initially
+            drawCanvas(true); 
         }
         productImg.src = event.target.result;
     }
     reader.readAsDataURL(file);
 });
 
-// Handle Logo Upload
+// Handle Logo Upload (Reads the logo file and redraws canvas immediately)
 logoInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -40,11 +40,10 @@ logoInput.addEventListener('change', (e) => {
     reader.readAsDataURL(file);
 });
 
-// Core Canvas Drawing Function (1:1 Square + Padding + Watermark)
+// Core Canvas Drawing Function (1:1 Square + Padding + Logo + Watermark)
 function drawCanvas(includeWatermark) {
     if (!productImg) return;
 
-    // Set canvas dimensions to a clean 1080x1080 square (Standard Instagram size)
     const size = 1080;
     canvas.width = size;
     canvas.height = size;
@@ -53,8 +52,8 @@ function drawCanvas(includeWatermark) {
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, size, size);
 
-    // 2. Calculate dimensions to center the product image perfectly without cutting it
-    const padding = 80; // Margin around the image
+    // 2. Center the product image with padding
+    const padding = 80; 
     const availableSize = size - (padding * 2);
     
     let imgWidth = productImg.width;
@@ -67,25 +66,25 @@ function drawCanvas(includeWatermark) {
     let x = (size - newWidth) / 2;
     let y = (size - newHeight) / 2;
 
-    // Draw the product image onto the square canvas
     ctx.drawImage(productImg, x, y, newWidth, newHeight);
 
-    // 3. Draw Custom Store Logo if uploaded
+    // 3. CHANGE HERE: Draw Custom Store Logo in the bottom-right corner if uploaded
     if (logoImg) {
-        const logoSize = 150;
-        ctx.drawImage(logoImg, size - logoSize - 40, size - logoSize - 40, logoSize, logoSize);
+        const logoSize = 180; // You can change this number if you want the logo bigger or smaller
+        const margin = 50;   // Distance from the bottom-right corner edge
+        
+        ctx.drawImage(logoImg, size - logoSize - margin, size - logoSize - margin, logoSize, logoSize);
     }
 
     // 4. Handle Watermark overlay
     if (includeWatermark) {
         ctx.save();
-        ctx.font = "bold 28px sans-serif";
+        ctx.font = "bold 26px sans-serif";
         ctx.fillStyle = "rgba(100, 100, 100, 0.5)";
         ctx.textAlign = "center";
         ctx.textBaseline = "bottom";
         
-        // Draw agency branding across the bottom or center
-        ctx.fillText("@growth.online.post", size / 2, size - 30);
+        ctx.fillText("@growth.online.post", size / 2, size - 25);
         ctx.restore();
     }
 }
@@ -96,18 +95,17 @@ document.getElementById('downloadWatermarked').addEventListener('click', () => {
     triggerDownload("instagram-product-free.png");
 });
 
-// Paid Version (Simulates UPI Payment flow for ₹20)
+// Paid Version Simulation
 document.getElementById('payAndDownload').addEventListener('click', () => {
     let confirmed = confirm("Pay ₹20 via UPI to remove watermark and download clean HD image?");
     if (confirmed) {
         alert("Payment successful! Downloading clean image...");
-        drawCanvas(false); // Draw without watermark
+        drawCanvas(false); 
         triggerDownload("instagram-product-hd.png");
-        drawCanvas(true); // Restore preview watermark
+        drawCanvas(true); 
     }
 });
 
-// Helper function to trigger browser download
 function triggerDownload(filename) {
     const link = document.createElement('a');
     link.download = filename;
